@@ -61,5 +61,17 @@ export class MarcadoresComponent implements AfterViewInit {
     this.marcadores.push({ color, marcador: nuevoMarcador });
   }
 
-  moveToMarket() {}
+  moveToMarket(marcador: mapboxgl.Marker) {
+    this.mapa.flyTo({
+      center: marcador.getLngLat(),
+    });
+  }
+
+  saveMarkers() {
+    localStorage.setItem('marcadores', JSON.stringify(this.marcadores));
+  }
+
+  readMarkers() {
+    localStorage.getItem('marcadores');
+  }
 }
