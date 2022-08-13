@@ -3,7 +3,8 @@ import * as mapboxgl from 'mapbox-gl';
 
 interface ColorMarcador {
   color: string;
-  marcador: mapboxgl.Marker;
+  marcador?: mapboxgl.Marker;
+  centro?: [number, number];
 }
 
 @Component({
@@ -45,6 +46,8 @@ export class MarcadoresComponent implements AfterViewInit {
       center: this.geodata,
       zoom: this.zoomLevel,
     });
+
+    this.readMarkers();
   }
 
   addMarket() {
@@ -59,6 +62,11 @@ export class MarcadoresComponent implements AfterViewInit {
       .addTo(this.mapa);
 
     this.marcadores.push({ color, marcador: nuevoMarcador });
+    this.saveMarkers();
+
+    nuevoMarcador.on('dragend', () => {
+      this.saveMarkers();
+    });
   }
 
   moveToMarket(marcador: mapboxgl.Marker) {
@@ -68,10 +76,46 @@ export class MarcadoresComponent implements AfterViewInit {
   }
 
   saveMarkers() {
-    localStorage.setItem('marcadores', JSON.stringify(this.marcadores));
+    const lngLatArr: ColorMarcador[] = [];
+    this.marcadores.forEach((m) => {
+      const color = m.color;
+      const { lng, lat } = m.marcador!.getLngLat();
+
+      lngLatArr.push({ color: color, centro: [lng, lat] });
+    });
+    localStorage.setItem('marcadores', JSON.stringify(lngLatArr));
   }
 
   readMarkers() {
-    localStorage.getItem('marcadores');
+    if (!localStorage.getItem('marcadores')) {
+      return;
+    }
+    const lngLatArr: ColorMarcador[] = JSON.parse(
+      localStorage.getItem('marcadores')!
+    );
+
+    lngLatArr.forEach((m) => {
+      const newMarker = new mapboxgl.Marker({
+        color: m.color,
+        draggable: true,
+      })
+        .setLngLat(m.centro!)
+        .addTo(this.mapa);
+
+      this.marcadores.push({
+        marcador: newMarker,
+        color: m.color,
+      });
+
+      newMarker.on('dragend', () => {
+        this.saveMarkers();
+      });
+    });
+  }
+
+  deleteMarker(indice: number) {
+    this.marcadores[indice].marcador?.remove();
+    this.marcadores.splice(indice, 1);
+    this.saveMarkers();
   }
 }

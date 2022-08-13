@@ -4,7 +4,8 @@
   </li>
   <li
     class="list-group-item"
-    (click)="moveToMarket(marcador.marcador)"
+    (click)="moveToMarket(marcador.marcador!)"
+    (dblclick)="deleteMarker(i)"
     *ngFor="let marcador of marcadores; let i = index"
     [ngStyle]="{
       'background-color': marcador.color
