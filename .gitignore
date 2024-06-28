@@ -46,3 +46,6 @@ Thumbs.db
 
 # Angular cache
 .angular/cache
+
+.env
+src/environments/environment.ts

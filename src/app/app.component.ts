@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { environment } from '../environments/environment.prod';
+import { environment } from '../environments/environment';
 import * as mapboxgl from 'mapbox-gl';
 
 @Component({
@@ -9,6 +9,6 @@ import * as mapboxgl from 'mapbox-gl';
 })
 export class AppComponent implements OnInit {
   ngOnInit(): void {
-    (mapboxgl as any).accessToken = environment.mapboxToken;
+    (mapboxgl as any).accessToken = environment.mapbox_key;
   }
 }
