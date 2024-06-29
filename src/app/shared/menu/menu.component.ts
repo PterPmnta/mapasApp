@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
 interface MenuItem {
   ruta: string;
@@ -6,7 +8,9 @@ interface MenuItem {
 }
 
 @Component({
-  selector: 'app-menu',
+  standalone: true,
+  selector: 'side-menu',
+  imports: [CommonModule, RouterModule],
   templateUrl: './menu.component.html',
   styles: [
     `
@@ -15,6 +19,7 @@ interface MenuItem {
       }
     `,
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MenuComponent {
   menuItems: MenuItem[] = [
@@ -33,6 +38,10 @@ export class MenuComponent {
     {
       ruta: '/mapas/propiedades',
       nombre: 'Propiedades',
+    },
+    {
+      ruta: '/alone',
+      nombre: 'Houses',
     },
   ];
 }
