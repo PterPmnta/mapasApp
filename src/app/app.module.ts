@@ -7,8 +7,8 @@ import { MapasModule } from './mapas/mapas.module';
 import { MenuComponent } from './shared/menu/menu.component';
 
 @NgModule({
-  declarations: [AppComponent, MenuComponent],
-  imports: [BrowserModule, AppRoutingModule, MapasModule],
+  declarations: [AppComponent],
+  imports: [BrowserModule, AppRoutingModule, MapasModule, MenuComponent],
   providers: [],
   bootstrap: [AppComponent],
 })
